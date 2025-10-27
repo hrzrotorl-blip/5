@@ -26,7 +26,7 @@ public class ReturnToTitle : MonoBehaviour
     void Update()
     {
         // ESC 키 입력 감지
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             // 메인 타이틀로 전환
             SceneManager.LoadScene(titleSceneName);
