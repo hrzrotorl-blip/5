@@ -1,44 +1,57 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BGMController : MonoBehaviour
+public class BGMManager : MonoBehaviour
 {
-    private static BGMController instance;
+    private static BGMManager instance;
     private AudioSource audioSource;
 
     void Awake()
     {
-        // ´Ù¸¥ ¾ÀÀ¸·Î ÀüÈ¯µÅµµ À½¾Ç À¯Áö
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-            audioSource = GetComponent<AudioSource>();
-        }
-        else
+        // ì´ë¯¸ ì¡´ì¬í•˜ëŠ” BGMManagerê°€ ìˆë‹¤ë©´ ìƒˆë¡œ ìƒê¸´ ê±´ íŒŒê´´
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject); // âœ… ì”¬ ì „í™˜ ì‹œ íŒŒê´´ë˜ì§€ ì•Šê²Œ ìœ ì§€
+
+        audioSource = GetComponent<AudioSource>();
+
+        if (audioSource != null && !audioSource.isPlaying)
+        {
+            audioSource.loop = true;
+            audioSource.Play();
         }
     }
 
-    // Àç»ı
-    public void PlayBGM()
+    public static BGMManager Instance
     {
-        if (!audioSource.isPlaying)
-            audioSource.Play();
+        get { return instance; }
     }
 
-    // ÀÏ½ÃÁ¤Áö
-    public void PauseBGM()
+    public void SetMute(bool mute)
     {
-        if (audioSource.isPlaying)
-            audioSource.Pause();
+        if (audioSource != null)
+            audioSource.mute = mute;
     }
 
-    // º¼·ı Á¶Àı
+    public bool IsMuted()
+    {
+        return audioSource != null && audioSource.mute;
+    }
+
     public void SetVolume(float volume)
     {
-        audioSource.volume = volume;
+        if (audioSource != null)
+            audioSource.volume = volume;
+    }
+
+    public float GetVolume()
+    {
+        return audioSource != null ? audioSource.volume : 1f;
     }
 }

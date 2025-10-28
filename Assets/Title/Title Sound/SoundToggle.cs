@@ -6,11 +6,10 @@ using UnityEngine.UI;
 public class SoundToggle : MonoBehaviour
 {
     [Header("UI 연결")]
-    public AudioSource bgmSource;   // 배경음 오디오 소스
     public Button soundButton;      // 사운드 버튼
     public Text buttonText;         // 버튼 텍스트 (TMP_Text 가능)
     public Slider volumeSlider;     // 볼륨 조절 슬라이더
-    public Image soundIcon;         // 🎵 버튼에 표시될 아이콘 이미지
+    public Image soundIcon;         // 아이콘 이미지
 
     [Header("아이콘 이미지 설정")]
     public Sprite soundOnSprite;    // 🔊 사운드 켜짐 아이콘
@@ -20,15 +19,18 @@ public class SoundToggle : MonoBehaviour
 
     void Start()
     {
-        if (bgmSource == null)
-            bgmSource = FindObjectOfType<AudioSource>();
-
-        if (volumeSlider != null)
+        // 현재 BGMManager 상태에 맞게 초기 설정
+        if (BGMManager.Instance != null)
         {
-            volumeSlider.minValue = 0f;
-            volumeSlider.maxValue = 1f;
-            volumeSlider.value = bgmSource != null ? bgmSource.volume : 1f;
-            volumeSlider.onValueChanged.AddListener(SetVolume);
+            isMuted = BGMManager.Instance.IsMuted();
+
+            if (volumeSlider != null)
+            {
+                volumeSlider.minValue = 0f;
+                volumeSlider.maxValue = 1f;
+                volumeSlider.value = BGMManager.Instance.GetVolume();
+                volumeSlider.onValueChanged.AddListener(SetVolume);
+            }
         }
 
         UpdateButtonUI();
@@ -36,45 +38,29 @@ public class SoundToggle : MonoBehaviour
 
     public void ToggleSound()
     {
-        if (bgmSource == null)
-        {
-            bgmSource = FindObjectOfType<AudioSource>();
-            if (bgmSource == null) return;
-        }
+        if (BGMManager.Instance == null)
+            return;
 
         isMuted = !isMuted;
-        bgmSource.mute = isMuted;
+        BGMManager.Instance.SetMute(isMuted);
         UpdateButtonUI();
     }
 
     public void SetVolume(float volume)
     {
-        if (bgmSource != null)
-        {
-            // 오직 볼륨만 설정
-            bgmSource.volume = volume;
-
-            // isMuted 변수나 bgmSource.mute 상태는 건드리지 않습니다.
-            // UI 업데이트(UpdateButtonUI)도 호출하지 않습니다.
-        }
+        if (BGMManager.Instance != null)
+            BGMManager.Instance.SetVolume(volume);
     }
 
     void UpdateButtonUI()
     {
-        // 🔤 텍스트 변경
         if (buttonText != null)
             buttonText.text = isMuted ? "Sound Off" : "Sound On";
 
-        // 🎵 아이콘 변경
         if (soundIcon != null)
             soundIcon.sprite = isMuted ? soundOffSprite : soundOnSprite;
 
-
-        // ✅ 슬라이더 표시를 '음소거 상태의 반대'로 설정
-        // isMuted가 false(사운드 켜짐)일 때만 슬라이더가 보이게 됩니다.
         if (volumeSlider != null)
             volumeSlider.gameObject.SetActive(!isMuted);
-
     }
-
 }
