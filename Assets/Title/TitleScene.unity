@@ -1464,6 +1464,10 @@ MonoBehaviour:
   bgmSource: {fileID: 1881771894}
   soundButton: {fileID: 1803550499}
   buttonText: {fileID: 0}
+  volumeSlider: {fileID: 0}
+  soundIcon: {fileID: 1803550497}
+  soundOnSprite: {fileID: 21300000, guid: ef301158449333447b4eb5080ea63387, type: 3}
+  soundOffSprite: {fileID: 21300000, guid: cf2a8e040bb761d4e869ef952136e702, type: 3}
 --- !u!1 &1722617090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,7 +1578,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 304, y: 182}
+  m_AnchoredPosition: {x: 41, y: 182}
   m_SizeDelta: {x: -1520, y: -780}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1803550497
@@ -1597,7 +1601,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cf2a8e040bb761d4e869ef952136e702, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ef301158449333447b4eb5080ea63387, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
