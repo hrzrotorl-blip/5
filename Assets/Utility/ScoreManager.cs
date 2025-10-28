@@ -31,6 +31,7 @@ public class ScoreManager : MonoBehaviour
 
     void UpdateScoreText()
     {
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = score.ToString();  // "¿ø" Á¦°Å
     }
+
 }
